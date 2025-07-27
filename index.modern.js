@@ -182,16 +182,25 @@
 
   function getBrowserLanguage() {
     if (typeof navigator === "undefined") {
-      const lang = Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
+      const fullLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+      const lang = fullLocale.split("-")[0];
 
+      if (supportedLanguages.includes(fullLocale)) return "name:" + fullLocale;
       return supportedLanguages.includes(lang) ? "name:" + lang : "name:en";
     }
 
-    const canditateLangs = Array.from(
-      new Set(navigator.languages.map((l) => l.split("-")[0]))
-    ).filter((li) => supportedLanguages.includes(li));
+    const allLocales = navigator.languages.flatMap(lang => {
+      let result = [];
+      while (lang.includes("-")) {
+        result.push(lang);
+        lang = lang.substring(0, lang.lastIndexOf("-"));
+      }
+      result.push(lang);
+      return result.filter(lang => supportedLanguages.includes(lang));
+    });
 
-    return canditateLangs[0] ? "name:" + canditateLangs[0] : "name";
+    const candidateLangs = Array.from(new Set(allLocales));
+    return candidateLangs[0] ? "name:" + candidateLangs[0] : "name";
   }
 
   maplibregl.Map.prototype.supportedLanguages = supportedLanguages;
