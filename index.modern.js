@@ -4,6 +4,12 @@
       ","
     );
 
+  const ALT_LOCALES = {
+    'zh-cn': 'zh-Hans',
+    'zh-hk': 'zh-Hant',
+    'zh-tw': 'zh-Hant'
+  };
+
   function checkNamePattern(str, localized) {
     const regex = localized ? /\{name:\S+\}/ : /\{name\}/;
 
@@ -192,7 +198,7 @@
     const allLocales = navigator.languages.flatMap(lang => {
       let result = [];
       while (lang.includes("-")) {
-        result.push(lang);
+        result.push(ALT_LOCALES[lang.toLowerCase()] || lang);
         lang = lang.substring(0, lang.lastIndexOf("-"));
       }
       result.push(lang);
