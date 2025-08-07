@@ -7,6 +7,8 @@
   const ALT_LOCALES = {
     'zh-cn': 'zh-Hans',
     'zh-hk': 'zh-Hant',
+    'zh-mo': 'zh-Hant',
+    'zh-sg': 'zh-Hans',
     'zh-tw': 'zh-Hant'
   };
 
